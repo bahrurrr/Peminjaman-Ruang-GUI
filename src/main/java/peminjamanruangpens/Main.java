@@ -8,14 +8,33 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Kelas Main mengatur antarmuka pengguna berbasis JavaFX (GUI).
+ * Bertindak sebagai *View* yang merender elemen visual dan menghubungkan 
+ * aksi klik tombol (Events) ke logika bisnis di kelas SistemPeminjaman.
+ * 
+ * @author Luthfi Bahrur Rozaq, Bagus Sri Wisnu, Aslam Aji Prasetyo
+ * @version 1.0
+ */
 public class Main extends Application {
 
     private static SistemPeminjaman sistemPeminjaman = new SistemPeminjaman();
 
+    /**
+     * Mengambil instance dari SistemPeminjaman yang sedang berjalan.
+     * 
+     * @return Objek SistemPeminjaman aktif.
+     */
     public static SistemPeminjaman getSistem() {
         return sistemPeminjaman;
     }
 
+    /**
+     * Metode utama (*entry point*) untuk JavaFX yang akan dipanggil pertama kali.
+     * Mengatur *Stage* utama (jendela program) dan merender menu *dashboard*.
+     * 
+     * @param primaryStage Jendela/Window utama aplikasi.
+     */
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Dashboard - Sistem Peminjaman Ruangan PENS");
@@ -54,7 +73,10 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    // --- FORM 1: LIHAT JADWAL & PINJAM RUANGAN ---
+    /**
+     * Membuka *window* (Form 1) untuk melihat jadwal ketersediaan ruangan 
+     * dan mengeksekusi peminjaman ruangan.
+     */
     private void bukaFormLihatDanPinjam() {
         Stage stage = new Stage();
         stage.setTitle("Lihat Jadwal & Peminjaman Ruangan");
@@ -140,7 +162,9 @@ public class Main extends Application {
         stage.show();
     }
 
-    // --- FORM 2: REGISTRASI MEMBER BARU ---
+    /**
+     * Membuka *window* (Form 2) untuk mendaftarkan data Member (NRP dan Nama) ke dalam sistem.
+     */
     private void bukaFormRegistrasiMember() {
         Stage stage = new Stage();
         stage.setTitle("Registrasi Member Baru");
@@ -181,7 +205,10 @@ public class Main extends Application {
         stage.show();
     }
 
-    // --- FORM 3: TAMBAH RUANGAN BARU ---
+    /**
+     * Membuka *window* (Form 3) untuk menambah data Ruangan baru ke dalam sistem 
+     * beserta kapasitasnya.
+     */
     private void bukaFormTambahRuangan() {
         Stage stage = new Stage();
         stage.setTitle("Tambah Ruangan Baru");
@@ -222,6 +249,11 @@ public class Main extends Application {
         stage.show();
     }
 
+    /**
+     * Fungsi `main` standar untuk meluncurkan aplikasi Java.
+     * 
+     * @param args Argumen dari *command line*.
+     */
     public static void main(String[] args) {
         launch(args);
     }

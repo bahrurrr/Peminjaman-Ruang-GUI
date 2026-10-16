@@ -2,23 +2,38 @@ package peminjamanruangpens;
 import java.util.LinkedList; 
 import java.util.Scanner;
 
+/**
+ * Kelas SistemPeminjaman adalah *controller* utama yang mengatur seluruh logika bisnis.
+ * Kelas ini menyimpan daftar ruang dan member, serta memproses validasi transaksi.
+ * Mendukung eksekusi via Command Line (CLI) maupun dipanggil melalui GUI (JavaFX).
+ * 
+ * @author Luthfi Bahrur Rozaq, Bagus Sri Wisnu, Aslam Aji Prasetyo
+ * @version 1.0
+ */
 public class SistemPeminjaman {
     private LinkedList<Ruang> daftarRuang;
     private LinkedList<Member> daftarMember;
     private Scanner input;
 
+    /**
+     * Konstruktor default yang akan menginisialisasi LinkedList 
+     * dan memasukkan beberapa data dummy awal (Ruang dan Member).
+     */
     public SistemPeminjaman() {
         this.daftarRuang = new LinkedList<>();
         this.daftarMember = new LinkedList<>();
         this.input = new Scanner(System.in);
 
+        // Data Dummy
         daftarRuang.add(new Ruang("Lab APD", 30));
         daftarRuang.add(new Ruang("Lab Jaringan", 30));
         daftarRuang.add(new Ruang("Ruang B201", 60));
-        
         daftarMember.add(new Member("Luthfi Bahrur Rozaq", "069"));
     }
 
+    /**
+     * Memulai loop menu interaktif untuk mode CLI (Command Line Interface).
+     */
     public void mulai() {
         int pilihan;
         do {
@@ -52,6 +67,7 @@ public class SistemPeminjaman {
     }
     
     private void menuLihatDanPinjam() {
+        // ... (Kode bawaan asli tetap sama)
         if (daftarRuang.isEmpty()) {
             System.out.println("Belum ada ruangan yang terdaftar di sistem!");
             return;
@@ -142,6 +158,12 @@ public class SistemPeminjaman {
         System.out.println("Ruangan " + namaRuangBaru + " berhasil ditambahkan ke sistem!");
     }
 
+    /**
+     * Mencari objek Member berdasarkan NRP.
+     * 
+     * @param nrpDicari String NRP yang ingin dicari di LinkedList.
+     * @return Objek Member jika ditemukan, null jika tidak terdaftar.
+     */
     private Member cariMember(String nrpDicari) {
         for (int i = 0; i < daftarMember.size(); i++) {
             Member memberSaatIni = daftarMember.get(i);
@@ -152,12 +174,25 @@ public class SistemPeminjaman {
         return null; 
     }
     
-    // Method untuk mengambil daftar ruang agar bisa dibaca oleh GUI
+    /**
+     * Mengambil LinkedList seluruh ruangan yang terdaftar.
+     * Digunakan oleh GUI (ComboBox) untuk menampilkan pilihan ruang.
+     * 
+     * @return LinkedList berisi objek Ruang.
+     */
     public LinkedList<Ruang> getDaftarRuang() {
         return daftarRuang;
     }
 
-    // Method pembungkus untuk memproses peminjaman dari GUI
+    /**
+     * Memproses permintaan peminjaman yang dikirim dari antarmuka GUI.
+     * 
+     * @param ruang Objek Ruang yang akan dipinjam.
+     * @param tanggal String tanggal peminjaman.
+     * @param pilsesi Nomor sesi (1-3).
+     * @param nrp String NRP peminjam untuk validasi.
+     * @return String pesan notifikasi sukses atau gagal untuk ditampilkan di GUI.
+     */
     public String prosesPeminjaman(Ruang ruang, String tanggal, int pilsesi, String nrp) {
         Member pencarianMember = cariMember(nrp);
 
@@ -173,7 +208,15 @@ public class SistemPeminjaman {
             return "Maaf, sesi tersebut sudah dipinjam orang lain.";
         }
     }
-    // Method pembungkus untuk registrasi member dari GUI
+
+    /**
+     * Memproses permintaan registrasi member baru yang dikirim dari antarmuka GUI.
+     * Melakukan validasi input kosong dan pengecekan duplikasi NRP.
+     * 
+     * @param nama String nama lengkap member baru.
+     * @param nrp String NRP member baru.
+     * @return String pesan notifikasi hasil registrasi.
+     */
     public String prosesRegistrasiMember(String nama, String nrp) {
         if (nama == null || nama.trim().isEmpty() || nrp == null || nrp.trim().isEmpty()) {
             return "Gagal: Nama dan NRP tidak boleh kosong!";
@@ -187,7 +230,14 @@ public class SistemPeminjaman {
         }
     }
     
-    // Method pembungkus untuk menambah ruangan dari GUI
+    /**
+     * Memproses penambahan ruangan baru dari antarmuka GUI.
+     * Melakukan konversi string kapasitas ke integer serta mencegah duplikasi nama ruang.
+     * 
+     * @param namaRuang String nama ruangan baru.
+     * @param kapasitasStr String angka kapasitas.
+     * @return String pesan notifikasi hasil penambahan ruangan.
+     */
     public String prosesTambahRuangan(String namaRuang, String kapasitasStr) {
         if (namaRuang == null || namaRuang.trim().isEmpty() || kapasitasStr == null || kapasitasStr.trim().isEmpty()) {
             return "Gagal: Nama ruangan dan kapasitas tidak boleh kosong!";
@@ -199,7 +249,6 @@ public class SistemPeminjaman {
                 return "Gagal: Kapasitas ruangan harus lebih besar dari 0!";
             }
 
-            // Cek duplikat nama ruangan
             for (Ruang r : daftarRuang) {
                 if (r.getNamaRuang().equalsIgnoreCase(namaRuang.trim())) {
                     return "Gagal: Ruangan dengan nama tersebut sudah terdaftar!";
@@ -213,4 +262,3 @@ public class SistemPeminjaman {
         }
     }
 }
-
